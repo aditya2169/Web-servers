@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/aditya2169/Web-servers#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "hbs": "^4.2.0"
   }
 }
