@@ -2,6 +2,8 @@ const path=require('path')
 const express = require('express')
 const hbs=require('hbs')
 const app = express()
+const geocode=require('./utils/geocode.js')
+const weather_info=require('./utils/weather_info.js')
 
 // Define path or express config
 const publicDirectoryPath= path.join(__dirname,'../public')
@@ -40,9 +42,58 @@ app.get('/help',(req,res)=>{
 })
 
 app.get('/weather',(req,res)=>{
+
+    if(!req.query.address){
+        return res.send({
+            error:'Must provide an address!!!'
+        })
+    }
+
+    geocode(req.query.address,(error , {latitude,longitude})=>{
+        weather_info(latitude,longitude,(error,response)=>{
+            return res.send({
+                location:response.body.location.name,
+                temprature:response.body.current.temperature,
+                forecast:response.body.current.weather_descriptions[0]
+            })
+        })
+    })
+
+    // res.send({
+    //     address:req.query.address,
+    //     forecast:"sunny",
+    //     location:'jaipur'
+    // })
+})
+
+app.get('/products',(req,res)=>{
+
+    if(!req.query.search){
+        return res.send({
+            error:'You must provide a search term'
+        })
+    }
+
+    console.log(req.query)
+
     res.send({
-        forecast:"sunny",
-        location:'jaipur'
+        products:[]
+    })
+})
+
+app.get('/help/*',(req,res)=>{
+    res.render('error',{
+        title:'No help!!',
+        message:'Help article not found',
+        name:'Aditya Shah'
+    })
+})
+ 
+app.get('*',(reg,res)=>{
+    res.render('error',{
+        title:'404!!!',
+        message:'Page not found',
+        name:'Aditya Shah'
     })
 })
 
