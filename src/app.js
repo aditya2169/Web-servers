@@ -3,7 +3,25 @@ const express = require('express')
 const app = express()
 
 app.get('',(req,res)=>{
-    res.send('Hello Express!!')
+    res.send('<h1>Weather</h1>')
+})
+
+app.get('/help',(req,res)=>{
+    res.send({
+        name:'aditya',
+        age:21
+    })
+})
+
+app.get('/about',(req,res)=>{
+    res.send('<h1> About Route</h1>')
+})
+
+app.get('/weather',(req,res)=>{
+    res.send({
+        forecast:"sunny",
+        location:'jaipur'
+    })
 })
 
 //app.com
