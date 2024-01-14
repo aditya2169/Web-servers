@@ -49,21 +49,23 @@ app.get('/weather',(req,res)=>{
         })
     }
 
-    geocode(req.query.address,(error , {latitude,longitude})=>{
+    geocode(req.query.address,(error , {latitude,longitude}={})=>{
+        if(error){
+            return res.send({error})
+        }
         weather_info(latitude,longitude,(error,response)=>{
-            return res.send({
+
+            if(error){
+                return res.send({error})
+            }
+
+            res.send({
                 location:response.body.location.name,
                 temprature:response.body.current.temperature,
                 forecast:response.body.current.weather_descriptions[0]
             })
         })
     })
-
-    // res.send({
-    //     address:req.query.address,
-    //     forecast:"sunny",
-    //     location:'jaipur'
-    // })
 })
 
 app.get('/products',(req,res)=>{
